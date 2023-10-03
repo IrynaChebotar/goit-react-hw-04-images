@@ -1,4 +1,3 @@
-// ImageGalleryItem.js
 import React from 'react';
 import { GalleryItem, GalleryItemimage } from './ImageGalleryItem.styled';
 

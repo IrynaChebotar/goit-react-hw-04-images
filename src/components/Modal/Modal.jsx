@@ -1,34 +1,32 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { ModalContainer, Overlay } from './Modal.styled';
 
-export class Modal extends Component {
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown);
-  }
+export const Modal = ({ largeImageURL, onClose }) => {
+  useEffect(() => {
+    const handleKeyDown = event => {
+      if (event.code === 'Escape') {
+        onClose();
+      }
+    };
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown);
-  }
+    window.addEventListener('keydown', handleKeyDown);
 
-  handleKeyDown = event => {
-    if (event.code === 'Escape') {
-      this.props.onClose();
-    }
-  };
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
 
-  handleCloseModal = event => {
+  const handleCloseModal = event => {
     if (event.target === event.currentTarget) {
-      this.props.onClose();
+      onClose();
     }
   };
 
-  render() {
-    return (
-      <Overlay onClick={this.handleCloseModal}>
-        <ModalContainer>
-          <img src={this.props.largeImageURL} alt="" />
-        </ModalContainer>
-      </Overlay>
-    );
-  }
-}
+  return (
+    <Overlay onClick={handleCloseModal}>
+      <ModalContainer>
+        <img src={largeImageURL} alt="" />
+      </ModalContainer>
+    </Overlay>
+  );
+};
